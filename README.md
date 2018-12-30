@@ -13,3 +13,5 @@ A new Flutter news application.
 4.: Add a file named api_key.dart in your lib folder and add your API-Key like this:
 
     const String API_KEY = "yourkey";
+    
+    You can get your personal API-Key from newsapi.org
