@@ -1,0 +1,41 @@
+name: flutter_news_app
+description: A new Flutter news application.
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  http: ^0.12.0
+
+  flutter_custom_tabs: ^0.4.0
+
+  shared_preferences: ^0.4.3
+
+  simple_design: ^1.0.3
+
+  community_material_icon: ^2.8.94
+
+  cached_network_image: ^0.5.1
+
+  share: ^0.5.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_launcher_icons: ^0.7.0
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/logo.png"
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: HK Grotesk
+      fonts:
+      - asset: fonts/HKGrotesk-Regular.ttf
+      - asset: fonts/HKGrotesk-Bold.ttf
+        weight: 700
