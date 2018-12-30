@@ -28,7 +28,7 @@ class _SearchPageState extends State<SearchPage> {
     });
     await fetchAPIData(buildEverythingRequest(
             searchTerm: q,
-            language: language ?? Languages.de,
+            language: language ?? Languages.en,
             sortBy: sortBy ?? Sortings.relevancy,
             from: from,
             to: to,
@@ -132,7 +132,7 @@ class _FilterDialogState extends State<FilterDialog> {
     to = widget.filter["to"] ?? DateTime.now();
     dropdownValue = widget.filter["sorting"] ?? Sortings.relevancy;
     sliderValue = ((widget.filter["pageSize"] ?? 20) - 10) / 90;
-    lang = widget.filter["language"] ?? Languages.de;
+    lang = widget.filter["language"] ?? Languages.en;
     super.initState();
   }
 

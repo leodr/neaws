@@ -128,7 +128,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         displacement: kToolbarHeight,
         onRefresh: () async {
           return await fetchAPIData(
-              buildHeadlineRequest(countryCode: Countries.de, apiKey: API_KEY));
+              buildHeadlineRequest(countryCode: Countries.gb, apiKey: API_KEY));
         },
         child: CustomScrollView(
           controller: mainPageScroller,
@@ -481,7 +481,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateMainPageList() async {
     await fetchAPIData(
-            buildHeadlineRequest(countryCode: Countries.de, apiKey: API_KEY))
+            buildHeadlineRequest(countryCode: Countries.gb, apiKey: API_KEY))
         .then((list) {
       setState(() {
         listItems = list;
@@ -492,7 +492,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateBusinessPageList() async {
     await fetchAPIData(buildHeadlineRequest(
-            countryCode: Countries.de,
+            countryCode: Countries.gb,
             category: Categories.business,
             apiKey: API_KEY))
         .then((list) {
@@ -505,7 +505,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateEntertainmentPageList() async {
     await fetchAPIData(buildHeadlineRequest(
-            countryCode: Countries.de,
+            countryCode: Countries.gb,
             category: Categories.entertainment,
             apiKey: API_KEY))
         .then((list) {
@@ -518,7 +518,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateGeneralPageList() async {
     await fetchAPIData(buildHeadlineRequest(
-            countryCode: Countries.de,
+            countryCode: Countries.gb,
             category: Categories.general,
             apiKey: API_KEY))
         .then((list) {
@@ -531,7 +531,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateHealthPageList() async {
     await fetchAPIData(buildHeadlineRequest(
-            countryCode: Countries.de,
+            countryCode: Countries.gb,
             category: Categories.health,
             apiKey: API_KEY))
         .then((list) {
@@ -544,7 +544,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateSciencePageList() async {
     await fetchAPIData(buildHeadlineRequest(
-            countryCode: Countries.de,
+            countryCode: Countries.gb,
             category: Categories.science,
             apiKey: API_KEY))
         .then((list) {
@@ -557,7 +557,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateSportsPageList() async {
     await fetchAPIData(buildHeadlineRequest(
-            countryCode: Countries.de,
+            countryCode: Countries.gb,
             category: Categories.sports,
             apiKey: API_KEY))
         .then((list) {
@@ -570,7 +570,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateTechnologyPageList() async {
     await fetchAPIData(buildHeadlineRequest(
-            countryCode: Countries.de,
+            countryCode: Countries.gb,
             category: Categories.technology,
             apiKey: API_KEY))
         .then((list) {
@@ -597,7 +597,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   Future<Null> updateSourcesList() async {
     await fetchSourceData(buildSourcesRequest(
-            country: Countries.de, language: Languages.de, apiKey: API_KEY))
+            country: Countries.gb, language: Languages.en, apiKey: API_KEY))
         .then((list) {
       setState(() {
         sourcesList = list;

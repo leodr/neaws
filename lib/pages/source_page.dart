@@ -29,7 +29,7 @@ class _SourcePageState extends State<SourcePage> {
 
   Future<Null> updateSourceList() async {
     await fetchAPIData(buildEverythingRequest(
-            language: Languages.de,
+            language: Languages.en,
             sourcesIDs: widget.source["id"],
             sortBy: Sortings.popularity,
             apiKey: widget.apiKey))
