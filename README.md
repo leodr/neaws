@@ -14,4 +14,4 @@ A new Flutter news application.
 
     const String API_KEY = "yourkey";
     
-    You can get your personal API-Key from newsapi.org
+You can get your personal API-Key from newsapi.org
