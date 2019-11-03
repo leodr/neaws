@@ -1,17 +1,16 @@
-# flutter_news_app
+# neaws
 
-A new Flutter news application.
+A new Flutter project.
 
-## How to successfully compile this
+## Getting Started
 
-1.: Go to android/app/build.gradle and delete lines 17-19 (key stuff for Google Play Store)
+This project is a starting point for a Flutter application.
 
-2.: Delete the signingConfigs in build.gradle
+A few resources to get you started if this is your first Flutter project:
 
-3.: Remove line 51 (signingConfig signingConfigs.release)
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-4.: Add a file named api_key.dart in your lib folder and add your API-Key like this:
-
-    const String API_KEY = "yourkey";
-    
-You can get your personal API-Key from newsapi.org
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
