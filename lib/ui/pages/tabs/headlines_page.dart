@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neaws/api/models/article.dart';
 import 'package:neaws/providers/news_provider.dart';
 import 'package:neaws/ui/widgets/list_item.dart';
 import 'package:neaws/ui/widgets/search_button.dart';
@@ -16,11 +17,11 @@ class HeadlinesPage extends StatelessWidget {
         _,
       ) {
         final ThemeData theme = Theme.of(context);
-        final listItems = newsProvider.listItems;
+        final List<Article> listItems = newsProvider.listItems;
 
         return RefreshIndicator(
           backgroundColor: theme.backgroundColor,
-          key: Key("firstPage"),
+          key: const Key('firstPage'),
           displacement: kToolbarHeight,
           onRefresh: () => newsProvider.updateList(),
           child: CustomScrollView(
@@ -29,11 +30,11 @@ class HeadlinesPage extends StatelessWidget {
                 leading: SearchButton(),
                 title: Text.rich(
                   TextSpan(
-                    text: "Neaws ",
+                    text: 'Neaws ',
                     style: theme.textTheme.title,
-                    children: [
+                    children: <TextSpan>[
                       TextSpan(
-                        text: "Headlines",
+                        text: 'Headlines',
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                         ),
@@ -45,15 +46,15 @@ class HeadlinesPage extends StatelessWidget {
                   SettingsButton(),
                 ],
               ),
-              listItems.length < 1
+              listItems.isEmpty
                   ? SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: const CircularProgressIndicator(),
                       ),
                     )
                   : SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (context, i) => ListItem(
+                        (BuildContext context, int i) => ListItem(
                           listItems[i],
                           onSaved: newsProvider.updateSavedList,
                         ),

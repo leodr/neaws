@@ -12,20 +12,20 @@ import 'package:neaws/constants/languages.dart';
 import 'package:neaws/constants/sortings.dart';
 
 class NewsApi {
-  final String apiKey;
-
-  Dio dio;
-
   NewsApi({this.apiKey}) {
     dio = Dio(
       BaseOptions(
         baseUrl: BASE_URL,
-        headers: {
-          "X-Api-Key": apiKey,
+        headers: <String, dynamic>{
+          'X-Api-Key': apiKey,
         },
       ),
     );
   }
+
+  final String apiKey;
+
+  Dio dio;
 
   Future<ArticlesResponse> getHeadlines({
     Countries country,
@@ -35,22 +35,22 @@ class NewsApi {
     int pageSize,
     int page,
   }) async {
-    final countryCode = country.toString().split(".")[1].toLowerCase();
-    final categoryCode = category.toString().split(".")[1].toLowerCase();
-    final sourceList = sources.join(",");
+    final String countryCode = country.toString().split('.')[1].toLowerCase();
+    final String categoryCode = category.toString().split('.')[1].toLowerCase();
+    final String sourceList = sources.join(',');
 
-    final response = await dio.get(
+    final Response<dynamic> response = await dio.get<dynamic>(
       HEADLINES_ROUTE,
-      queryParameters: {
-        "country": countryCode,
-        "category": categoryCode,
-        "sources": sourceList,
-        "q": q,
-        "pageSize": pageSize,
-        "page": page,
+      queryParameters: <String, dynamic>{
+        'country': countryCode,
+        'category': categoryCode,
+        'sources': sourceList,
+        'q': q,
+        'pageSize': pageSize,
+        'page': page,
       },
     );
-    final json = jsonDecode(response.data);
+    final Map<String, dynamic> json = jsonDecode(response.data);
 
     return ArticlesResponse.fromJSON(json);
   }
@@ -68,33 +68,37 @@ class NewsApi {
     int pageSize,
     int page,
   }) async {
-    final sourceList = sources.join(",");
-    final domainList = domains.join(",");
-    final excludeDomainList = excludeDomains.join(",");
-    final fromString = from.toIso8601String();
-    final toString = to.toIso8601String();
-    final languageString = language.toString().split(".")[1].toLowerCase();
-    final sortByString = sortBy.toString().split(".")[1].toLowerCase();
+    final String sourceList = sources?.join(',');
+    final String domainList = domains?.join(',');
+    final String excludeDomainList = excludeDomains?.join(',');
+    final String fromString = from?.toIso8601String();
+    final String toString = to?.toIso8601String();
+    final String languageString =
+        language?.toString()?.split('.')[1].toLowerCase();
+    final String sortByString = sortBy?.toString()?.split('.')[1].toLowerCase();
 
-    final response = await dio.get(
+    final Map<String, dynamic> queryParameters = <String, dynamic>{
+      'q': q,
+      'qInTitle': qInTitle,
+      'sources': sourceList,
+      'domains': domainList,
+      'excludeDomains': excludeDomainList,
+      'from': fromString,
+      'to': toString,
+      'language': languageString,
+      'sortBy': sortByString,
+      'pageSize': pageSize,
+      'page': page,
+    };
+
+    queryParameters.removeWhere((String key, dynamic value) => value == null);
+
+    final Response<dynamic> response = await dio.get<dynamic>(
       EVERYTHING_ROUTE,
-      queryParameters: {
-        "q": q,
-        "qInTitle": qInTitle,
-        "sources": sourceList,
-        "domains": domainList,
-        "excludeDomains": excludeDomainList,
-        "from": fromString,
-        "to": toString,
-        "language": languageString,
-        "sortBy": sortByString,
-        "pageSize": pageSize,
-        "page": page,
-      },
+      queryParameters: queryParameters,
     );
-    final json = jsonDecode(response.data);
 
-    return ArticlesResponse.fromJSON(json);
+    return ArticlesResponse.fromJSON(response.data);
   }
 
   Future<SourcesResponse> getSources({
@@ -102,19 +106,21 @@ class NewsApi {
     Languages language,
     Countries country,
   }) async {
-    final categoryString = category.toString().split(".")[1].toLowerCase();
-    final languageString = language.toString().split(".")[1].toLowerCase();
-    final countryString = country.toString().split(".")[1].toLowerCase();
+    final String categoryString =
+        category.toString().split('.')[1].toLowerCase();
+    final String languageString =
+        language.toString().split('.')[1].toLowerCase();
+    final String countryString = country.toString().split('.')[1].toLowerCase();
 
-    final response = await dio.get(
+    final Response<dynamic> response = await dio.get<dynamic>(
       EVERYTHING_ROUTE,
-      queryParameters: {
-        "category": categoryString,
-        "language": languageString,
-        "country": countryString,
+      queryParameters: <String, String>{
+        'category': categoryString,
+        'language': languageString,
+        'country': countryString,
       },
     );
-    final json = jsonDecode(response.data);
+    final Map<String, dynamic> json = jsonDecode(response.data);
 
     return SourcesResponse.fromJSON(json);
   }

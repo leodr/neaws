@@ -17,10 +17,12 @@ class TopicsPage extends StatelessWidget {
         NewsProvider newsProvider,
         _,
       ) {
-        final theme = Theme.of(context);
+        final ThemeData theme = Theme.of(context);
 
-        final updateList = newsProvider.updateList;
-        final updateSavedList = newsProvider.updateSavedList;
+        final Future<void> Function({Categories category}) updateList =
+            newsProvider.updateList;
+        final Future<void> Function() updateSavedList =
+            newsProvider.updateSavedList;
 
         return DefaultTabController(
           length: Categories.values.length,
@@ -29,16 +31,16 @@ class TopicsPage extends StatelessWidget {
               BuildContext context,
               bool innerBoxIsScrolled,
             ) =>
-                [
+                <Widget>[
               SDSliverAppBar(
                 leading: SearchButton(),
                 title: Text.rich(
                   TextSpan(
-                    text: "Neaws ",
+                    text: 'Neaws ',
                     style: theme.textTheme.title,
-                    children: [
+                    children: <TextSpan>[
                       TextSpan(
-                        text: "Topics",
+                        text: 'Topics',
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                         ),
@@ -54,33 +56,33 @@ class TopicsPage extends StatelessWidget {
                 ],
                 bottom: TabBar(
                   isScrollable: true,
-                  tabs: [
+                  tabs: <Tab>[
                     Tab(
-                      text: "Business",
+                      text: 'Business',
                       icon: Icon(EvaIcons.briefcaseOutline),
                     ),
                     Tab(
-                      text: "Entertainment",
+                      text: 'Entertainment',
                       icon: Icon(EvaIcons.tvOutline),
                     ),
                     Tab(
-                      text: "General",
+                      text: 'General',
                       icon: Icon(EvaIcons.peopleOutline),
                     ),
                     Tab(
-                      text: "Health",
+                      text: 'Health',
                       icon: Icon(EvaIcons.activityOutline),
                     ),
                     Tab(
-                      text: "Science",
+                      text: 'Science',
                       icon: Icon(EvaIcons.bulbOutline),
                     ),
                     Tab(
-                      text: "Sports",
+                      text: 'Sports',
                       icon: Icon(EvaIcons.globeOutline),
                     ),
                     Tab(
-                      text: "Technology",
+                      text: 'Technology',
                       icon: Icon(EvaIcons.radioOutline),
                     ),
                   ],
@@ -88,7 +90,7 @@ class TopicsPage extends StatelessWidget {
               ),
             ],
             body: TabBarView(
-              children: [
+              children: <Widget>[
                 TopicList(
                   onUpdate: updateList,
                   category: Categories.business,
@@ -99,6 +101,12 @@ class TopicsPage extends StatelessWidget {
                   onUpdate: updateList,
                   category: Categories.entertainment,
                   articleList: newsProvider.entertainmentNews,
+                  onSaved: updateSavedList,
+                ),
+                TopicList(
+                  onUpdate: updateList,
+                  category: Categories.general,
+                  articleList: newsProvider.generalNews,
                   onSaved: updateSavedList,
                 ),
                 TopicList(

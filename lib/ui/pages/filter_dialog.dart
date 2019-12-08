@@ -2,6 +2,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:neaws/constants/languages.dart';
 import 'package:neaws/constants/sortings.dart';
+import 'package:neaws/models/search_filter.dart';
+import 'package:neaws/ui/widgets/custom_back_button.dart';
 import 'package:neaws/util/date_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_design/simple_design.dart';
@@ -14,7 +16,7 @@ class FilterDialog extends StatefulWidget {
 }
 
 class _FilterDialogState extends State<FilterDialog> {
-  TextEditingController _searchTermController = TextEditingController();
+  final TextEditingController _searchTermController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +28,15 @@ class _FilterDialogState extends State<FilterDialog> {
             NewsSearchProvider newsSearchProvider,
             _,
           ) {
-            final searchFilter = newsSearchProvider.searchFilter;
+            final SearchFilter searchFilter = newsSearchProvider.searchFilter;
 
             _searchTermController.text = searchFilter.searchTerm;
 
             return CustomScrollView(
               slivers: <Widget>[
                 SDSliverAppBar(
-                  title: Text("Filters"),
+                  leading: const CustomBackButton(),
+                  title: const Text('Filters'),
                   actions: <Widget>[
                     IconButton(
                       icon: Icon(EvaIcons.checkmarkOutline),
@@ -45,28 +48,28 @@ class _FilterDialogState extends State<FilterDialog> {
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
-                    [
+                    <Widget>[
                       ListTile(
                         leading: Icon(EvaIcons.textOutline),
                         title: TextField(
                           controller: _searchTermController,
-                          onChanged: (v) {
+                          onChanged: (String v) {
                             newsSearchProvider.updateSearchFilter(
                                 searchTerm: v);
                           },
-                          decoration: InputDecoration(hintText: "Search term"),
+                          decoration: InputDecoration(hintText: 'Search term'),
                         ),
                       ),
                       SDDivider(),
-                      SDSectionHeader("Date"),
+                      SDSectionHeader('Date'),
                       ListTile(
                         leading: Icon(EvaIcons.calendarOutline),
-                        title: Text("From:"),
+                        title: const Text('From:'),
                         trailing: Text(
-                          formatDate(searchFilter.from),
+                          formatDate(searchFilter.from) ?? '',
                         ),
                         onTap: () async {
-                          final date = await showDatePicker(
+                          final DateTime date = await showDatePicker(
                             context: context,
                             firstDate:
                                 DateTime.now().subtract(Duration(days: 30)),
@@ -79,13 +82,13 @@ class _FilterDialogState extends State<FilterDialog> {
                         },
                       ),
                       ListTile(
-                        leading: Icon(null),
-                        title: Text("To:"),
+                        leading: const Icon(null),
+                        title: const Text('To:'),
                         trailing: Text(
-                          formatDate(searchFilter.to),
+                          formatDate(searchFilter.to) ?? '',
                         ),
                         onTap: () async {
-                          final date = await showDatePicker(
+                          final DateTime date = await showDatePicker(
                             context: context,
                             firstDate:
                                 DateTime.now().subtract(Duration(days: 30)),
@@ -98,53 +101,53 @@ class _FilterDialogState extends State<FilterDialog> {
                         },
                       ),
                       SDDivider(),
-                      SDSectionHeader("Sort by"),
+                      SDSectionHeader('Sort by'),
                       ListTile(
-                        leading: Icon(EvaIcons.arrowCircleDownOutline),
-                        title: DropdownButton(
-                          hint: Text("Sort by"),
+                        leading: Icon(EvaIcons.trendingUpOutline),
+                        title: DropdownButton<Sortings>(
+                          hint: const Text('Sort by'),
                           value: searchFilter.sortings,
                           isExpanded: true,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("Relevancy"),
+                          items: const <DropdownMenuItem<Sortings>>[
+                            DropdownMenuItem<Sortings>(
+                              child: Text('Relevancy'),
                               value: Sortings.relevancy,
                             ),
-                            DropdownMenuItem(
-                              child: Text("Popularity"),
+                            DropdownMenuItem<Sortings>(
+                              child: Text('Popularity'),
                               value: Sortings.popularity,
                             ),
-                            DropdownMenuItem(
-                              child: Text("Published At"),
+                            DropdownMenuItem<Sortings>(
+                              child: Text('Published At'),
                               value: Sortings.publishedAt,
                             ),
                           ],
-                          onChanged: (value) {
+                          onChanged: (Sortings value) {
                             newsSearchProvider.updateSearchFilter(
                                 sortings: value);
                           },
                         ),
                       ),
                       SDDivider(),
-                      SDSectionHeader("Language"),
+                      SDSectionHeader('Language'),
                       ListTile(
                         leading: Icon(EvaIcons.globe2Outline),
-                        title: DropdownButton(
+                        title: DropdownButton<Languages>(
                           isExpanded: true,
                           value: searchFilter.language,
-                          items: List.generate(
+                          items: List<DropdownMenuItem<Languages>>.generate(
                             Languages.values.length,
-                            (i) => DropdownMenuItem(
+                            (int i) => DropdownMenuItem<Languages>(
                               child: Text(
                                 Languages.values[i]
                                     .toString()
-                                    .split(".")[1]
+                                    .split('.')[1]
                                     .toUpperCase(),
                               ),
                               value: Languages.values[i],
                             ),
                           ),
-                          onChanged: (val) {
+                          onChanged: (Languages val) {
                             return newsSearchProvider.updateSearchFilter(
                               language: val,
                             );
@@ -152,14 +155,14 @@ class _FilterDialogState extends State<FilterDialog> {
                         ),
                       ),
                       SDDivider(),
-                      SDSectionHeader("Articles per page"),
+                      SDSectionHeader('Articles per page'),
                       ListTile(
                         leading: Icon(EvaIcons.bookOpenOutline),
                         title: Slider(
                           value: (searchFilter.pageLength - 10) / 90,
                           divisions: 9,
                           label: searchFilter.pageLength.toString(),
-                          onChanged: (value) {
+                          onChanged: (double value) {
                             return newsSearchProvider.updateSearchFilter(
                               pageLength: (value * 90).round() + 10,
                             );

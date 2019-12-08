@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:neaws/api/models/article.dart';
 import 'package:neaws/constants/categories.dart';
 
 import 'list_item.dart';
 
 class TopicList extends StatelessWidget {
-  final Future Function({Categories category}) onUpdate;
-  final Categories category;
-  final List articleList;
-  final VoidCallback onSaved;
-
   const TopicList({
     Key key,
     this.onUpdate,
@@ -17,6 +13,11 @@ class TopicList extends StatelessWidget {
     this.onSaved,
   }) : super(key: key);
 
+  final Future<void> Function({Categories category}) onUpdate;
+  final Categories category;
+  final List<Article> articleList;
+  final VoidCallback onSaved;
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -24,12 +25,12 @@ class TopicList extends StatelessWidget {
       onRefresh: () => onUpdate(
         category: category,
       ),
-      child: articleList.length < 1
+      child: articleList.isEmpty
           ? Center(
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
             )
           : ListView.builder(
-              itemBuilder: (context, i) => ListItem(
+              itemBuilder: (BuildContext context, int i) => ListItem(
                 articleList[i],
                 onSaved: onSaved,
               ),

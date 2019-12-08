@@ -1,24 +1,31 @@
 import 'package:flutter/foundation.dart';
+import 'package:neaws/api/models/article.dart';
+import 'package:neaws/api/models/articles_response.dart';
 import 'package:neaws/api/news_api.dart';
-import 'package:neaws/constants/api_key.dart';
 import 'package:neaws/constants/languages.dart';
 import 'package:neaws/constants/sortings.dart';
 import 'package:neaws/models/search_filter.dart';
 
-import '../main.dart';
-
 class NewsSearchProvider with ChangeNotifier {
+  NewsSearchProvider({this.api});
+
   final NewsApi api;
 
-  List _searchList = [];
-  SearchFilter _searchFilter = SearchFilter();
+  List<Article> _searchList = <Article>[];
+  SearchFilter _searchFilter = SearchFilter(
+    from: DateTime.now(),
+    language: Languages.en,
+    pageLength: 20,
+    sortings: Sortings.relevancy,
+    to: DateTime.now().add(
+      Duration(days: 30),
+    ),
+  );
 
-  NewsSearchProvider(this.api);
-
-  get searchList => _searchList;
+  List<Article> get searchList => _searchList;
   SearchFilter get searchFilter => _searchFilter;
 
-  set searchList(List newList) {
+  set searchList(List<Article> newList) {
     _searchList = newList;
     notifyListeners();
   }
@@ -28,7 +35,7 @@ class NewsSearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future updateSearchList(
+  Future<void> updateSearchList(
     String q, {
     Languages language,
     Sortings sortBy,
@@ -36,29 +43,26 @@ class NewsSearchProvider with ChangeNotifier {
     DateTime to,
     int pageSize,
   }) async {
-    final list = await fetchAPIData(
-      buildEverythingRequest(
-        searchTerm: q,
-        language: language ?? Languages.en,
-        sortBy: sortBy ?? Sortings.relevancy,
-        from: from,
-        to: to,
-        pageSize: pageSize,
-        apiKey: API_KEY,
-      ),
+    final ArticlesResponse list = await api.getEverything(
+      q: q,
+      language: language ?? Languages.en,
+      sortBy: sortBy ?? Sortings.relevancy,
+      from: from,
+      to: to,
+      pageSize: pageSize,
     );
 
-    searchList = list ?? [];
+    searchList = list.articles ?? <Article>[];
     return;
   }
 
-  updateSearchFilter({
-    searchTerm,
-    from,
-    to,
-    sortings,
-    pageLength,
-    language,
+  void updateSearchFilter({
+    String searchTerm,
+    DateTime from,
+    DateTime to,
+    Sortings sortings,
+    int pageLength,
+    Languages language,
   }) {
     searchFilter = searchFilter.copyWith(
       searchTerm: searchTerm,

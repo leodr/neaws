@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neaws/api/models/article.dart';
 import 'package:neaws/providers/news_provider.dart';
 import 'package:neaws/ui/widgets/list_item.dart';
 import 'package:neaws/ui/widgets/search_button.dart';
@@ -16,12 +17,12 @@ class SavedPage extends StatelessWidget {
         NewsProvider newsProvider,
         _,
       ) {
-        final theme = Theme.of(context);
+        final ThemeData theme = Theme.of(context);
 
-        final savedItems = newsProvider.savedItems;
+        final List<Article> savedItems = newsProvider.savedItems;
 
         return RefreshIndicator(
-          key: Key("thirdPage"),
+          key: const Key('thirdPage'),
           onRefresh: newsProvider.updateSavedList,
           child: CustomScrollView(
             slivers: <Widget>[
@@ -29,11 +30,11 @@ class SavedPage extends StatelessWidget {
                 leading: SearchButton(),
                 title: RichText(
                   text: TextSpan(
-                    text: "Neaws ",
+                    text: 'Neaws ',
                     style: theme.textTheme.title,
-                    children: [
+                    children: <TextSpan>[
                       TextSpan(
-                        text: "Saved",
+                        text: 'Saved',
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                         ),
@@ -41,32 +42,33 @@ class SavedPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                actions: [
+                actions: <Widget>[
                   SettingsButton(),
                 ],
               ),
-              savedItems.length < 1
+              savedItems.isEmpty
                   ? SliverFillRemaining(
                       child: Center(
-                        child: Text(
-                          "You have not saved any articles yet.",
+                        child: const Text(
+                          'You have not saved any articles yet.',
                         ),
                       ),
                     )
                   : SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (context, i) => Dismissible(
+                        (BuildContext context, int i) => Dismissible(
                           background: Container(
                             color: Theme.of(context).errorColor,
                           ),
                           key: Key(i.toString()),
                           child: ListItem(savedItems[i]),
                           onDismissed: (_) async {
-                            final prefs = await SharedPreferences.getInstance();
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
 
                             prefs.setStringList(
-                              "saved",
-                              prefs.getStringList("saved")..removeAt(i),
+                              'saved',
+                              prefs.getStringList('saved')..removeAt(i),
                             );
                             newsProvider.updateSavedList();
                           },

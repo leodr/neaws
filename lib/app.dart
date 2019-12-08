@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neaws/constants/api_key.dart';
+import 'package:neaws/providers/news_api_provider.dart';
 import 'package:neaws/providers/news_search_provider.dart';
 import 'package:neaws/ui/pages/filter_dialog.dart';
 import 'package:provider/provider.dart';
@@ -12,41 +13,53 @@ import 'ui/pages/search_page.dart';
 import 'ui/pages/settings_page.dart';
 
 class App extends StatelessWidget {
-  final NewsApi _newsApi = NewsApi(apiKey: API_KEY);
-
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeProvider>(
-          builder: (context) => ThemeProvider(),
-        ),
-        ChangeNotifierProvider<NewsProvider>(
-          builder: (context) => NewsProvider(api: _newsApi),
-        ),
-        ChangeNotifierProvider<NewsSearchProvider>(
-          builder: (context) => NewsSearchProvider(api: _newsApi),
-        ),
-      ],
-      child: Consumer<ThemeProvider>(
+    return ChangeNotifierProvider<NewsApiProvider>(
+      create: (BuildContext context) => NewsApiProvider(apiKey: API_KEY),
+      child: Consumer<NewsApiProvider>(
         builder: (
           BuildContext context,
-          ThemeProvider themeProvider,
+          NewsApiProvider newsApiProvider,
           _,
         ) {
-          final ThemeData theme = themeProvider.theme;
+          final NewsApi newsApi = newsApiProvider.newsApi;
 
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            color: theme.backgroundColor,
-            title: "Neaws",
-            theme: theme,
-            routes: {
-              "/": (context) => HomePage(),
-              "/settings": (context) => SettingsPage(),
-              "/search": (context) => SearchPage(),
-              "/searchfilter": (context) => FilterDialog(),
-            },
+          return MultiProvider(
+            providers: <SingleChildCloneableWidget>[
+              ChangeNotifierProvider<ThemeProvider>(
+                create: (BuildContext context) => ThemeProvider(),
+              ),
+              ChangeNotifierProvider<NewsProvider>(
+                create: (BuildContext context) => NewsProvider(api: newsApi),
+              ),
+              ChangeNotifierProvider<NewsSearchProvider>(
+                create: (BuildContext context) =>
+                    NewsSearchProvider(api: newsApi),
+              ),
+            ],
+            child: Consumer<ThemeProvider>(
+              builder: (
+                BuildContext context,
+                ThemeProvider themeProvider,
+                _,
+              ) {
+                final ThemeData theme = themeProvider.theme;
+
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  color: theme.backgroundColor,
+                  title: 'Neaws',
+                  theme: theme,
+                  routes: <String, WidgetBuilder>{
+                    '/': (BuildContext context) => HomePage(),
+                    '/settings': (BuildContext context) => SettingsPage(),
+                    '/search': (BuildContext context) => SearchPage(),
+                    '/searchfilter': (BuildContext context) => FilterDialog(),
+                  },
+                );
+              },
+            ),
           );
         },
       ),

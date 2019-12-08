@@ -4,26 +4,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:neaws/api/models/article.dart';
+import 'package:neaws/util/date_utils.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_design/simple_design.dart';
 
-import '../util.dart';
-
 class ListItem extends StatelessWidget {
-  final Map article;
-  final DateTime publishedAt;
-  final VoidCallback onSaved;
+  const ListItem(this.article, {this.onSaved});
 
-  ListItem(this.article, {this.onSaved})
-      : publishedAt = DateTime.parse(article["publishedAt"]);
+  final Article article;
+  final VoidCallback onSaved;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         InkWell(
-          onTap: () => launchURL(context, article["url"]),
+          onTap: () => launchURL(context, article.url),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
             child: Column(
@@ -38,7 +36,7 @@ class ListItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            article["source"]["name"].toString().toUpperCase(),
+                            article.source.name.toString().toUpperCase(),
                             maxLines: 1,
                             style: Theme.of(context)
                                 .textTheme
@@ -48,7 +46,7 @@ class ListItem extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Text(
-                              article["title"],
+                              article.title,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
@@ -60,12 +58,12 @@ class ListItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    article["urlToImage"] != null
+                    article.urlToImage != null
                         ? Card(
                             clipBehavior: Clip.antiAlias,
                             child: CachedNetworkImage(
                               fadeInDuration: Duration(milliseconds: 150),
-                              imageUrl: article["urlToImage"],
+                              imageUrl: article.urlToImage,
                               width: 100.0,
                               height: 100.0,
                               fit: BoxFit.cover,
@@ -88,36 +86,36 @@ class ListItem extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Text(getTimeStamp(publishedAt),
+                      child: Text(getTimeStamp(article.publishedAt),
                           style: Theme.of(context).textTheme.caption),
                     ),
-                    PopupMenuButton(
-                        onSelected: (value) {
+                    PopupMenuButton<String>(
+                        onSelected: (String value) {
                           switch (value) {
-                            case "share":
-                              Share.share(
-                                  article["title"] + "\n\n" + article["url"]);
+                            case 'share':
+                              Share.share(article.title + '\n\n' + article.url);
                               break;
-                            case "save":
+                            case 'save':
                               _save(article);
                               onSaved();
                               break;
                           }
                         },
-                        itemBuilder: (context) => [
-                              PopupMenuItem(
-                                  value: "share",
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuItem<String>>[
+                              PopupMenuItem<String>(
+                                  value: 'share',
                                   child: ListTile(
                                     dense: true,
-                                    title: Text("Share"),
+                                    title: const Text('Share'),
                                     leading: Icon(EvaIcons.shareOutline),
                                   )),
-                              PopupMenuItem(
+                              PopupMenuItem<String>(
                                   enabled: onSaved != null,
-                                  value: "save",
+                                  value: 'save',
                                   child: ListTile(
                                     dense: true,
-                                    title: Text("Save"),
+                                    title: const Text('Save'),
                                     leading: Icon(EvaIcons.saveOutline),
                                   ))
                             ])
@@ -135,42 +133,44 @@ class ListItem extends StatelessWidget {
   }
 
   String getTimeStamp(DateTime publishedAt) {
-    Duration difference = DateTime.now().difference(publishedAt);
+    final Duration difference = DateTime.now().difference(publishedAt);
 
     if (difference.inHours <= 1) {
-      return difference.inHours.toString() + " hour ago";
+      return difference.inHours.toString() + ' hour ago';
     } else if (difference.inHours < 24) {
-      return difference.inHours.toString() + " hours ago";
+      return difference.inHours.toString() + ' hours ago';
     } else if (difference.inDays <= 1) {
-      return difference.inDays.toString() + " day ago";
+      return difference.inDays.toString() + ' day ago';
     } else if (difference.inDays < 7) {
-      return difference.inDays.toString() + " days ago";
+      return difference.inDays.toString() + ' days ago';
     }
 
     return publishedAt.day.toString() +
-        ". " +
+        '. ' +
         getMonthString(publishedAt.month) +
-        " " +
+        ' ' +
         publishedAt.year.toString();
   }
 
-  void _save(Map article) async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.setStringList("saved",
-        (_prefs.getStringList("saved") ?? [])..add(json.encode(article)));
+  Future<void> _save(Article article) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.setStringList(
+        'saved',
+        (_prefs.getStringList('saved') ?? <String>[])
+          ..add(jsonEncode(article.toJSON())));
   }
 }
 
-void launchURL(BuildContext context, String url) async {
+Future<void> launchURL(BuildContext context, String url) async {
   try {
     await launch(
       url,
-      option: new CustomTabsOption(
+      option: CustomTabsOption(
         toolbarColor: Theme.of(context).scaffoldBackgroundColor,
         enableDefaultShare: true,
         enableUrlBarHiding: true,
         showPageTitle: true,
-        animation: CustomTabsAnimation(
+        animation: const CustomTabsAnimation(
           startEnter: 'slide_up',
           endExit: 'slide_down',
         ),

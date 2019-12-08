@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (position) {
+        onTap: (int position) {
           if (position != index) {
             setState(() {
               index = position;
@@ -33,26 +33,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         },
         currentIndex: index,
         type: BottomNavigationBarType.fixed,
-        items: [
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(EvaIcons.globe2Outline),
             activeIcon: Icon(EvaIcons.globe2),
-            title: Text("Headlines"),
+            title: const Text('Headlines'),
           ),
           BottomNavigationBarItem(
             icon: Icon(EvaIcons.folderOutline),
             activeIcon: Icon(EvaIcons.folder),
-            title: Text("Topics"),
+            title: const Text('Topics'),
           ),
           BottomNavigationBarItem(
             icon: Icon(EvaIcons.bookmarkOutline),
             activeIcon: Icon(EvaIcons.bookmark),
-            title: Text("Saved"),
+            title: const Text('Saved'),
           ),
           BottomNavigationBarItem(
             icon: Icon(EvaIcons.codeOutline),
             activeIcon: Icon(EvaIcons.code),
-            title: Text("Sources"),
+            title: const Text('Sources'),
           ),
         ],
       ),
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case 3:
         return SourcesPage();
       default:
-        return Text("Error.");
+        return const Text('Error.');
     }
   }
 }

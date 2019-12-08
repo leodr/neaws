@@ -1,143 +1,143 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:neaws/api/models/article.dart';
+import 'package:neaws/api/models/articles_response.dart';
+import 'package:neaws/api/models/source.dart';
+import 'package:neaws/api/models/sources_response.dart';
 import 'package:neaws/api/news_api.dart';
-import 'package:neaws/constants/api_key.dart';
 import 'package:neaws/constants/categories.dart';
 import 'package:neaws/constants/countries.dart';
 import 'package:neaws/constants/languages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
-
 class NewsProvider with ChangeNotifier {
-  final NewsApi api;
-
-  List _listItems = [],
-      _businessNews = [],
-      _entertainmentNews = [],
-      _generalNews = [],
-      _healthNews = [],
-      _scienceNews = [],
-      _sportsNews = [],
-      _technologyNews = [],
-      _sourcesList = [],
-      _savedItems = [];
-
   NewsProvider({this.api});
 
-  get listItems => _listItems;
-  get businessNews => _businessNews;
-  get entertainmentNews => _entertainmentNews;
-  get generalNews => _generalNews;
-  get healthNews => _healthNews;
-  get scienceNews => _scienceNews;
-  get sportsNews => _sportsNews;
-  get technologyNews => _technologyNews;
-  get sourcesList => _sourcesList;
-  get savedItems => _savedItems;
+  final NewsApi api;
 
-  set listItems(List newList) {
+  List<Article> _listItems = <Article>[],
+      _businessNews = <Article>[],
+      _entertainmentNews = <Article>[],
+      _generalNews = <Article>[],
+      _healthNews = <Article>[],
+      _scienceNews = <Article>[],
+      _sportsNews = <Article>[],
+      _technologyNews = <Article>[],
+      _savedItems = <Article>[];
+
+  List<Source> _sourcesList = <Source>[];
+
+  List<Article> get listItems => _listItems;
+  List<Article> get businessNews => _businessNews;
+  List<Article> get entertainmentNews => _entertainmentNews;
+  List<Article> get generalNews => _generalNews;
+  List<Article> get healthNews => _healthNews;
+  List<Article> get scienceNews => _scienceNews;
+  List<Article> get sportsNews => _sportsNews;
+  List<Article> get technologyNews => _technologyNews;
+  List<Article> get savedItems => _savedItems;
+
+  List<Source> get sourcesList => _sourcesList;
+
+  set listItems(List<Article> newList) {
     _listItems = newList;
     notifyListeners();
   }
 
-  set businessNews(List newList) {
+  set businessNews(List<Article> newList) {
     _businessNews = newList;
     notifyListeners();
   }
 
-  set entertainmentNews(List newList) {
+  set entertainmentNews(List<Article> newList) {
     _entertainmentNews = newList;
     notifyListeners();
   }
 
-  set generalNews(List newList) {
+  set generalNews(List<Article> newList) {
     _generalNews = newList;
     notifyListeners();
   }
 
-  set healthNews(List newList) {
+  set healthNews(List<Article> newList) {
     _healthNews = newList;
     notifyListeners();
   }
 
-  set scienceNews(List newList) {
+  set scienceNews(List<Article> newList) {
     _scienceNews = newList;
     notifyListeners();
   }
 
-  set sportsNews(List newList) {
+  set sportsNews(List<Article> newList) {
     _sportsNews = newList;
     notifyListeners();
   }
 
-  set technologyNews(List newList) {
+  set technologyNews(List<Article> newList) {
     _technologyNews = newList;
     notifyListeners();
   }
 
-  set sourcesList(List newList) {
+  set sourcesList(List<Source> newList) {
     _sourcesList = newList;
     notifyListeners();
   }
 
-  set savedItems(List newList) {
+  set savedItems(List<Article> newList) {
     _savedItems = newList;
     notifyListeners();
   }
 
-  Future updateList({Categories category}) async {
-    final list = await fetchAPIData(buildHeadlineRequest(
-      countryCode: Countries.gb,
-      category: category,
-      apiKey: API_KEY,
-    ));
+  Future<void> updateList({Categories category}) async {
+    final ArticlesResponse list =
+        await api.getHeadlines(country: Countries.gb, category: category);
 
     switch (category) {
       case Categories.business:
-        businessNews = list;
+        businessNews = list.articles;
         return;
       case Categories.entertainment:
-        entertainmentNews = list;
+        entertainmentNews = list.articles;
         return;
       case Categories.general:
-        generalNews = list;
+        generalNews = list.articles;
         return;
       case Categories.health:
-        healthNews = list;
+        healthNews = list.articles;
         return;
       case Categories.science:
-        scienceNews = list;
+        scienceNews = list.articles;
         return;
       case Categories.sports:
-        sportsNews = list;
+        sportsNews = list.articles;
         return;
       case Categories.technology:
-        technologyNews = list;
+        technologyNews = list.articles;
         return;
       default:
-        listItems = list;
+        listItems = list.articles;
         return;
     }
   }
 
-  Future updateSavedList() async {
-    final prefs = await SharedPreferences.getInstance();
-    final List savedList = prefs.getStringList("saved") ?? [];
+  Future<void> updateSavedList() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> savedList = prefs.getStringList('saved') ?? <String>[];
 
-    savedItems = savedList.map((e) => json.decode(e)).toList();
+    savedItems = savedList
+        .map<Article>((String e) => Article.fromJSON(jsonDecode(e)))
+        .toList();
     return;
   }
 
-  Future updateSourcesList() async {
-    final list = await fetchSourceData(buildSourcesRequest(
-      country: Countries.gb,
-      language: Languages.en,
-      apiKey: API_KEY,
-    ));
+  Future<void> updateSourcesList() async {
+    final SourcesResponse list =
+        await api.getSources(country: Countries.gb, language: Languages.en);
 
-    sourcesList = list;
+    sourcesList = list.sources;
     return;
   }
 }

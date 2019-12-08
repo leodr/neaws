@@ -5,7 +5,7 @@ class SearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.search),
-      onPressed: () => Navigator.pushNamed(context, "/search"),
+      onPressed: () => Navigator.pushNamed(context, '/search'),
     );
   }
 }
