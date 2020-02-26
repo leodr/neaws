@@ -57,7 +57,8 @@ class _FilterDialogState extends State<FilterDialog> {
                             newsSearchProvider.updateSearchFilter(
                                 searchTerm: v);
                           },
-                          decoration: InputDecoration(hintText: 'Search term'),
+                          decoration:
+                              const InputDecoration(hintText: 'Search term'),
                         ),
                       ),
                       SDDivider(),
@@ -71,8 +72,8 @@ class _FilterDialogState extends State<FilterDialog> {
                         onTap: () async {
                           final DateTime date = await showDatePicker(
                             context: context,
-                            firstDate:
-                                DateTime.now().subtract(Duration(days: 30)),
+                            firstDate: DateTime.now()
+                                .subtract(const Duration(days: 30)),
                             initialDate: searchFilter.from,
                             lastDate: DateTime.now(),
                           );
@@ -90,8 +91,8 @@ class _FilterDialogState extends State<FilterDialog> {
                         onTap: () async {
                           final DateTime date = await showDatePicker(
                             context: context,
-                            firstDate:
-                                DateTime.now().subtract(Duration(days: 30)),
+                            firstDate: DateTime.now()
+                                .subtract(const Duration(days: 30)),
                             initialDate: searchFilter.to,
                             lastDate: DateTime.now(),
                           );

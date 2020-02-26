@@ -47,9 +47,9 @@ class HeadlinesPage extends StatelessWidget {
                 ],
               ),
               listItems.isEmpty
-                  ? SliverFillRemaining(
+                  ? const SliverFillRemaining(
                       child: Center(
-                        child: const CircularProgressIndicator(),
+                        child: CircularProgressIndicator(),
                       ),
                     )
                   : SliverList(

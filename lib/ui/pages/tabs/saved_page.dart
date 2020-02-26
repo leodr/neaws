@@ -47,9 +47,9 @@ class SavedPage extends StatelessWidget {
                 ],
               ),
               savedItems.isEmpty
-                  ? SliverFillRemaining(
+                  ? const SliverFillRemaining(
                       child: Center(
-                        child: const Text(
+                        child: Text(
                           'You have not saved any articles yet.',
                         ),
                       ),

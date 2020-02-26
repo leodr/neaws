@@ -35,24 +35,26 @@ class NewsApi {
     int pageSize,
     int page,
   }) async {
-    final String countryCode = country.toString().split('.')[1].toLowerCase();
-    final String categoryCode = category.toString().split('.')[1].toLowerCase();
-    final String sourceList = sources.join(',');
+    final String countryCode =
+        country != null ? country.toString().split('.')[1].toLowerCase() : null;
+    final String categoryCode = category != null
+        ? category.toString().split('.')[1].toLowerCase()
+        : null;
+    final String sourceList = sources?.join(',');
 
-    final Response<dynamic> response = await dio.get<dynamic>(
-      HEADLINES_ROUTE,
-      queryParameters: <String, dynamic>{
-        'country': countryCode,
-        'category': categoryCode,
-        'sources': sourceList,
-        'q': q,
-        'pageSize': pageSize,
-        'page': page,
-      },
-    );
-    final Map<String, dynamic> json = jsonDecode(response.data);
+    final Map<String, String> queryParameters = <String, String>{
+      'country': countryCode,
+      'category': categoryCode,
+      'sources': sourceList,
+      'q': q,
+      'pageSize': pageSize?.toString(),
+      'page': page?.toString(),
+    }..removeWhere((String key, String value) => value == null);
 
-    return ArticlesResponse.fromJSON(json);
+    final Response<dynamic> response = await dio.get<dynamic>(HEADLINES_ROUTE,
+        queryParameters: queryParameters);
+
+    return ArticlesResponse.fromJSON(response.data);
   }
 
   Future<ArticlesResponse> getEverything({
@@ -73,11 +75,13 @@ class NewsApi {
     final String excludeDomainList = excludeDomains?.join(',');
     final String fromString = from?.toIso8601String();
     final String toString = to?.toIso8601String();
-    final String languageString =
-        language?.toString()?.split('.')[1].toLowerCase();
-    final String sortByString = sortBy?.toString()?.split('.')[1].toLowerCase();
+    final String languageString = language != null
+        ? language.toString().split('.')[1].toLowerCase()
+        : null;
+    final String sortByString =
+        sortBy != null ? sortBy.toString().split('.')[1].toLowerCase() : null;
 
-    final Map<String, dynamic> queryParameters = <String, dynamic>{
+    final Map<String, String> queryParameters = <String, String>{
       'q': q,
       'qInTitle': qInTitle,
       'sources': sourceList,
@@ -87,11 +91,9 @@ class NewsApi {
       'to': toString,
       'language': languageString,
       'sortBy': sortByString,
-      'pageSize': pageSize,
-      'page': page,
-    };
-
-    queryParameters.removeWhere((String key, dynamic value) => value == null);
+      'pageSize': pageSize?.toString(),
+      'page': page?.toString(),
+    }..removeWhere((String key, String value) => value == null);
 
     final Response<dynamic> response = await dio.get<dynamic>(
       EVERYTHING_ROUTE,
@@ -106,19 +108,24 @@ class NewsApi {
     Languages language,
     Countries country,
   }) async {
-    final String categoryString =
-        category.toString().split('.')[1].toLowerCase();
-    final String languageString =
-        language.toString().split('.')[1].toLowerCase();
-    final String countryString = country.toString().split('.')[1].toLowerCase();
+    final String categoryString = category != null
+        ? category.toString().split('.')[1].toLowerCase()
+        : null;
+    final String languageString = language != null
+        ? language.toString().split('.')[1].toLowerCase()
+        : null;
+    final String countryString =
+        country != null ? country.toString().split('.')[1].toLowerCase() : null;
+
+    final Map<String, String> queryParameters = <String, String>{
+      'category': categoryString,
+      'language': languageString,
+      'country': countryString,
+    }..removeWhere((String key, String value) => value == null);
 
     final Response<dynamic> response = await dio.get<dynamic>(
       EVERYTHING_ROUTE,
-      queryParameters: <String, String>{
-        'category': categoryString,
-        'language': languageString,
-        'country': countryString,
-      },
+      queryParameters: queryParameters,
     );
     final Map<String, dynamic> json = jsonDecode(response.data);
 

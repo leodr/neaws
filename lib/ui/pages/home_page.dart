@@ -1,10 +1,8 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
-import 'tabs/headlines_page.dart';
-import 'tabs/saved_page.dart';
-import 'tabs/sources_page.dart';
-import 'tabs/topics_page.dart';
+import 'package:neaws/constants/categories.dart';
+import 'package:neaws/providers/news_provider.dart';
+import 'package:neaws/ui/widgets/topic_list.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,65 +10,84 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  int index = 0;
+  PageController pageController = PageController();
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 200),
-          child: _getBody(index),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (int position) {
-          if (position != index) {
-            setState(() {
-              index = position;
-            });
-          }
-        },
-        currentIndex: index,
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(EvaIcons.globe2Outline),
-            activeIcon: Icon(EvaIcons.globe2),
-            title: const Text('Headlines'),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          PageView.builder(
+            controller: pageController,
+            itemBuilder: (BuildContext context, int i) => CustomScrollView(
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 49,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: AnimatedBuilder(
+                      animation: pageController,
+                      builder: (BuildContext context, Widget child) {
+                        return Opacity(
+                          opacity: (1 - (pageController.page % 1) * 2).abs(),
+                          child: Container(
+                            color: Colors.blueAccent,
+                            height: 40,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                TopicList(
+                  onUpdate: Provider.of<NewsProvider>(context).updateList,
+                  category: Categories.values[i],
+                  articleList: Provider.of<NewsProvider>(context).businessNews,
+                  onSaved: Provider.of<NewsProvider>(context).updateSavedList,
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(EvaIcons.folderOutline),
-            activeIcon: Icon(EvaIcons.folder),
-            title: const Text('Topics'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(EvaIcons.bookmarkOutline),
-            activeIcon: Icon(EvaIcons.bookmark),
-            title: const Text('Saved'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(EvaIcons.codeOutline),
-            activeIcon: Icon(EvaIcons.code),
-            title: const Text('Sources'),
+          Align(
+            alignment: Alignment.topCenter,
+            child: SafeArea(
+              child: SizedBox(
+                height: 40,
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) =>
+                      AnimatedBuilder(
+                    animation: pageController,
+                    builder: (BuildContext context, Widget child) {
+                      if (scrollController.hasListeners) {
+                        scrollController.jumpTo(
+                            constraints.maxWidth * 0.6 * pageController.page);
+                      }
+
+                      return ListView.builder(
+                        controller: scrollController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: constraints.maxWidth * 0.2),
+                        itemBuilder: (BuildContext context, int i) {
+                          return SizedBox(
+                            width: constraints.maxWidth * 0.6,
+                            child: Center(
+                                child: Text(Categories.values[i].toString())),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
-  }
-
-  Widget _getBody(int index) {
-    switch (index) {
-      case 0:
-        return HeadlinesPage();
-      case 1:
-        return TopicsPage();
-      case 2:
-        return SavedPage();
-      case 3:
-        return SourcesPage();
-      default:
-        return const Text('Error.');
-    }
   }
 }

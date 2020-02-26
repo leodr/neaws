@@ -18,7 +18,7 @@ class NewsSearchProvider with ChangeNotifier {
     pageLength: 20,
     sortings: Sortings.relevancy,
     to: DateTime.now().add(
-      Duration(days: 30),
+      const Duration(days: 30),
     ),
   );
 

@@ -62,7 +62,7 @@ class ListItem extends StatelessWidget {
                         ? Card(
                             clipBehavior: Clip.antiAlias,
                             child: CachedNetworkImage(
-                              fadeInDuration: Duration(milliseconds: 150),
+                              fadeInDuration: const Duration(milliseconds: 150),
                               imageUrl: article.urlToImage,
                               width: 100.0,
                               height: 100.0,

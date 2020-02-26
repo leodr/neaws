@@ -84,12 +84,6 @@ class _SourcePageState extends State<SourcePage> {
   }
 
   @override
-  void initState() {
-    updateSourceList();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: RefreshIndicator(
@@ -114,9 +108,9 @@ class _SourcePageState extends State<SourcePage> {
                 ])),
           ),
           articles.isEmpty
-              ? SliverFillRemaining(
+              ? const SliverFillRemaining(
                   child: Center(
-                    child: const CircularProgressIndicator(),
+                    child: CircularProgressIndicator(),
                   ),
                 )
               : SliverList(
