@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:neaws/api/models/article.dart';
-import 'package:neaws/constants/categories.dart';
-import 'package:neaws/providers/news_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../api/models/article.dart';
+import '../../constants/categories.dart';
+import '../../providers/news_provider.dart';
 import 'list_item.dart';
 
 class TopicList extends StatefulWidget {

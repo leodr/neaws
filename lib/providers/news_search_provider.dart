@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:neaws/api/models/article.dart';
-import 'package:neaws/api/models/articles_response.dart';
-import 'package:neaws/api/news_api.dart';
-import 'package:neaws/constants/languages.dart';
-import 'package:neaws/constants/sortings.dart';
-import 'package:neaws/models/search_filter.dart';
+
+import '../api/models/article.dart';
+import '../api/models/articles_response.dart';
+import '../api/news_api.dart';
+import '../constants/languages.dart';
+import '../constants/sortings.dart';
+import '../models/search_filter.dart';
 
 class NewsSearchProvider with ChangeNotifier {
   NewsSearchProvider({this.api});

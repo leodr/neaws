@@ -1,11 +1,11 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:neaws/api/models/article.dart';
-import 'package:neaws/ui/widgets/custom_back_button.dart';
-import 'package:neaws/ui/widgets/list_item.dart';
 import 'package:provider/provider.dart';
 
+import '../../api/models/article.dart';
 import '../../providers/news_search_provider.dart';
+import '../widgets/custom_back_button.dart';
+import '../widgets/list_item.dart';
 
 class SearchPage extends StatelessWidget {
   @override

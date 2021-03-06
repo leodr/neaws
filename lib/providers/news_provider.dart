@@ -2,15 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:neaws/api/models/article.dart';
-import 'package:neaws/api/models/articles_response.dart';
-import 'package:neaws/api/models/source.dart';
-import 'package:neaws/api/models/sources_response.dart';
-import 'package:neaws/api/news_api.dart';
-import 'package:neaws/constants/categories.dart';
-import 'package:neaws/constants/countries.dart';
-import 'package:neaws/constants/languages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../api/models/article.dart';
+import '../api/models/articles_response.dart';
+import '../api/models/source.dart';
+import '../api/models/sources_response.dart';
+import '../api/news_api.dart';
+import '../constants/categories.dart';
+import '../constants/countries.dart';
+import '../constants/languages.dart';
 
 class NewsProvider with ChangeNotifier {
   NewsProvider({this.api});

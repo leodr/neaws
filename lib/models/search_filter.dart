@@ -1,5 +1,5 @@
-import 'package:neaws/constants/languages.dart';
-import 'package:neaws/constants/sortings.dart';
+import '../constants/languages.dart';
+import '../constants/sortings.dart';
 
 class SearchFilter {
   SearchFilter({

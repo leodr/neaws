@@ -1,14 +1,14 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:neaws/constants/languages.dart';
-import 'package:neaws/constants/sortings.dart';
-import 'package:neaws/models/search_filter.dart';
-import 'package:neaws/ui/widgets/custom_back_button.dart';
-import 'package:neaws/util/date_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_design/simple_design.dart';
 
+import '../../constants/languages.dart';
+import '../../constants/sortings.dart';
+import '../../models/search_filter.dart';
 import '../../providers/news_search_provider.dart';
+import '../../util/date_utils.dart';
+import '../widgets/custom_back_button.dart';
 
 class FilterDialog extends StatefulWidget {
   @override

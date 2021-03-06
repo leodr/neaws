@@ -1,9 +1,10 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:neaws/providers/theme_provider.dart';
-import 'package:neaws/ui/widgets/custom_back_button.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_design/simple_design.dart';
+
+import '../../providers/theme_provider.dart';
+import '../widgets/custom_back_button.dart';
 
 class SettingsPage extends StatelessWidget {
   @override

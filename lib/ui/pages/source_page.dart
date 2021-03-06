@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:neaws/api/models/article.dart';
-import 'package:neaws/api/models/articles_response.dart';
-import 'package:neaws/api/models/source.dart';
-import 'package:neaws/constants/languages.dart';
-import 'package:neaws/constants/sortings.dart';
-import 'package:neaws/providers/news_api_provider.dart';
-import 'package:neaws/ui/widgets/list_item.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_design/simple_design.dart';
+
+import '../../api/models/article.dart';
+import '../../api/models/articles_response.dart';
+import '../../api/models/source.dart';
+import '../../constants/languages.dart';
+import '../../constants/sortings.dart';
+import '../../providers/news_api_provider.dart';
+import '../widgets/list_item.dart';
 
 class SourcePage extends StatefulWidget {
   const SourcePage({this.source, this.apiKey});

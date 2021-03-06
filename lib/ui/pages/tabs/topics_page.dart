@@ -1,12 +1,13 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:neaws/constants/categories.dart';
-import 'package:neaws/providers/news_provider.dart';
-import 'package:neaws/ui/widgets/search_button.dart';
-import 'package:neaws/ui/widgets/settings_button.dart';
-import 'package:neaws/ui/widgets/topic_list.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_design/simple_design.dart';
+
+import '../../../constants/categories.dart';
+import '../../../providers/news_provider.dart';
+import '../../widgets/search_button.dart';
+import '../../widgets/settings_button.dart';
+import '../../widgets/topic_list.dart';
 
 class TopicsPage extends StatelessWidget {
   @override

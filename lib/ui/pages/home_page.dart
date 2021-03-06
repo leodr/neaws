@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:neaws/constants/categories.dart';
-import 'package:neaws/providers/news_provider.dart';
-import 'package:neaws/ui/widgets/topic_list.dart';
 import 'package:provider/provider.dart';
+
+import '../../constants/categories.dart';
+import '../../providers/news_provider.dart';
+import '../widgets/topic_list.dart';
 
 class HomePage extends StatefulWidget {
   @override

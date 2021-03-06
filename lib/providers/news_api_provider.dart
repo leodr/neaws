@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:neaws/api/news_api.dart';
+
+import '../api/news_api.dart';
 
 class NewsApiProvider with ChangeNotifier {
   NewsApiProvider({this.apiKey}) {

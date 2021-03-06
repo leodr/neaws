@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:neaws/api/models/article.dart';
-import 'package:neaws/providers/news_provider.dart';
-import 'package:neaws/ui/widgets/list_item.dart';
-import 'package:neaws/ui/widgets/search_button.dart';
-import 'package:neaws/ui/widgets/settings_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_design/simple_design.dart';
+
+import '../../../api/models/article.dart';
+import '../../../providers/news_provider.dart';
+import '../../widgets/list_item.dart';
+import '../../widgets/search_button.dart';
+import '../../widgets/settings_button.dart';
 
 class SavedPage extends StatelessWidget {
   @override
