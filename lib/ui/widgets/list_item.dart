@@ -4,11 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:neaws/api/models/article.dart';
-import 'package:neaws/util/date_utils.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_design/simple_design.dart';
+
+import '../../api/models/article.dart';
+import '../../util/date_utils.dart';
 
 class ListItem extends StatelessWidget {
   const ListItem(this.article, {this.onSaved});
@@ -31,7 +32,6 @@ class ListItem extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       child: Column(
-                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -51,74 +51,81 @@ class ListItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subhead
+                                  .subtitle1
                                   .copyWith(fontSize: 18.0),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    article.urlToImage != null
-                        ? Card(
-                            clipBehavior: Clip.antiAlias,
-                            child: CachedNetworkImage(
-                              fadeInDuration: const Duration(milliseconds: 150),
-                              imageUrl: article.urlToImage,
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : Card(
-                            clipBehavior: Clip.antiAlias,
-                            color: Theme.of(context).backgroundColor,
-                            child: Container(
-                                width: 100.0,
-                                height: 100.0,
-                                alignment: Alignment.center,
-                                child: Icon(
-                                  EvaIcons.closeSquareOutline,
-                                  color: Theme.of(context).disabledColor,
-                                )),
-                          )
+                    if (article.urlToImage != null)
+                      Card(
+                        clipBehavior: Clip.antiAlias,
+                        child: CachedNetworkImage(
+                          fadeInDuration: const Duration(milliseconds: 150),
+                          imageUrl: article.urlToImage,
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    else
+                      Card(
+                        clipBehavior: Clip.antiAlias,
+                        color: Theme.of(context).backgroundColor,
+                        child: Container(
+                          width: 100.0,
+                          height: 100.0,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            EvaIcons.closeSquareOutline,
+                            color: Theme.of(context).disabledColor,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Text(getTimeStamp(article.publishedAt),
-                          style: Theme.of(context).textTheme.caption),
+                      child: Text(
+                        getTimeStamp(article.publishedAt),
+                        style: Theme.of(context).textTheme.caption,
+                      ),
                     ),
                     PopupMenuButton<String>(
-                        onSelected: (String value) {
-                          switch (value) {
-                            case 'share':
-                              Share.share(article.title + '\n\n' + article.url);
-                              break;
-                            case 'save':
-                              _save(article);
-                              onSaved();
-                              break;
-                          }
-                        },
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuItem<String>>[
-                              PopupMenuItem<String>(
-                                  value: 'share',
-                                  child: ListTile(
-                                    dense: true,
-                                    title: const Text('Share'),
-                                    leading: Icon(EvaIcons.shareOutline),
-                                  )),
-                              PopupMenuItem<String>(
-                                  enabled: onSaved != null,
-                                  value: 'save',
-                                  child: ListTile(
-                                    dense: true,
-                                    title: const Text('Save'),
-                                    leading: Icon(EvaIcons.saveOutline),
-                                  ))
-                            ])
+                      onSelected: (String value) {
+                        switch (value) {
+                          case 'share':
+                            Share.share('${article.title}\n\n${article.url}');
+                            break;
+                          case 'save':
+                            _save(article);
+                            onSaved();
+                            break;
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuItem<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'share',
+                          child: ListTile(
+                            dense: true,
+                            title: Text('Share'),
+                            leading: Icon(EvaIcons.shareOutline),
+                          ),
+                        ),
+                        PopupMenuItem<String>(
+                          enabled: onSaved != null,
+                          value: 'save',
+                          child: const ListTile(
+                            dense: true,
+                            title: Text('Save'),
+                            leading: Icon(EvaIcons.saveOutline),
+                          ),
+                        )
+                      ],
+                    )
                   ],
                 )
               ],
@@ -136,20 +143,16 @@ class ListItem extends StatelessWidget {
     final Duration difference = DateTime.now().difference(publishedAt);
 
     if (difference.inHours <= 1) {
-      return difference.inHours.toString() + ' hour ago';
+      return '${difference.inHours} hour ago';
     } else if (difference.inHours < 24) {
-      return difference.inHours.toString() + ' hours ago';
+      return '${difference.inHours} hours ago';
     } else if (difference.inDays <= 1) {
-      return difference.inDays.toString() + ' day ago';
+      return '${difference.inDays} day ago';
     } else if (difference.inDays < 7) {
-      return difference.inDays.toString() + ' days ago';
+      return '${difference.inDays} days ago';
     }
 
-    return publishedAt.day.toString() +
-        '. ' +
-        getMonthString(publishedAt.month) +
-        ' ' +
-        publishedAt.year.toString();
+    return '${publishedAt.day}. ${getMonthString(publishedAt.month)} ${publishedAt.year}';
   }
 
   Future<void> _save(Article article) async {

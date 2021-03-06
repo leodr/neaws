@@ -31,8 +31,8 @@ class SavedPage extends StatelessWidget {
                 title: RichText(
                   text: TextSpan(
                     text: 'Neaws ',
-                    style: theme.textTheme.title,
-                    children: <TextSpan>[
+                    style: theme.textTheme.headline6,
+                    children: const <TextSpan>[
                       TextSpan(
                         text: 'Saved',
                         style: TextStyle(
@@ -46,36 +46,37 @@ class SavedPage extends StatelessWidget {
                   SettingsButton(),
                 ],
               ),
-              savedItems.isEmpty
-                  ? const SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          'You have not saved any articles yet.',
-                        ),
-                      ),
-                    )
-                  : SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int i) => Dismissible(
-                          background: Container(
-                            color: Theme.of(context).errorColor,
-                          ),
-                          key: Key(i.toString()),
-                          child: ListItem(savedItems[i]),
-                          onDismissed: (_) async {
-                            final SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-
-                            prefs.setStringList(
-                              'saved',
-                              prefs.getStringList('saved')..removeAt(i),
-                            );
-                            newsProvider.updateSavedList();
-                          },
-                        ),
-                        childCount: savedItems.length,
-                      ),
+              if (savedItems.isEmpty)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      'You have not saved any articles yet.',
                     ),
+                  ),
+                )
+              else
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int i) => Dismissible(
+                      background: Container(
+                        color: Theme.of(context).errorColor,
+                      ),
+                      key: Key(i.toString()),
+                      onDismissed: (_) async {
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+
+                        prefs.setStringList(
+                          'saved',
+                          prefs.getStringList('saved')..removeAt(i),
+                        );
+                        newsProvider.updateSavedList();
+                      },
+                      child: ListItem(savedItems[i]),
+                    ),
+                    childCount: savedItems.length,
+                  ),
+                ),
             ],
           ),
         );

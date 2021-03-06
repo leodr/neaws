@@ -37,8 +37,8 @@ class TopicsPage extends StatelessWidget {
                 title: Text.rich(
                   TextSpan(
                     text: 'Neaws ',
-                    style: theme.textTheme.title,
-                    children: <TextSpan>[
+                    style: theme.textTheme.headline6,
+                    children: const <TextSpan>[
                       TextSpan(
                         text: 'Topics',
                         style: TextStyle(
@@ -54,7 +54,7 @@ class TopicsPage extends StatelessWidget {
                 actions: <Widget>[
                   SettingsButton(),
                 ],
-                bottom: TabBar(
+                bottom: const TabBar(
                   isScrollable: true,
                   tabs: <Tab>[
                     Tab(

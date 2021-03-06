@@ -86,40 +86,45 @@ class _SourcePageState extends State<SourcePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: RefreshIndicator(
-      backgroundColor: Theme.of(context).backgroundColor,
-      onRefresh: () async {
-        await updateSourceList();
-      },
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SDSliverAppBar(
-            title: RichText(
+      body: RefreshIndicator(
+        backgroundColor: Theme.of(context).backgroundColor,
+        onRefresh: () async {
+          await updateSourceList();
+        },
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SDSliverAppBar(
+              title: RichText(
                 text: TextSpan(
-                    text: 'Articles from: ',
-                    style: Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(fontWeight: FontWeight.normal),
-                    children: <TextSpan>[
-                  TextSpan(
-                      text: widget.source.name,
-                      style: Theme.of(context).textTheme.title)
-                ])),
-          ),
-          articles.isEmpty
-              ? const SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int i) => ListItem(articles[i]),
-                      childCount: articles.length),
-                )
-        ],
+                  text: 'Articles from: ',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(fontWeight: FontWeight.normal),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: widget.source.name,
+                        style: Theme.of(context).textTheme.headline6)
+                  ],
+                ),
+              ),
+            ),
+            if (articles.isEmpty)
+              const SliverFillRemaining(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int i) => ListItem(articles[i]),
+                  childCount: articles.length,
+                ),
+              ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

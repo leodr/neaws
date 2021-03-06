@@ -1,7 +1,7 @@
-const String BASE_URL = 'https://newsapi.org/v2';
+const String baseUrl = 'https://newsapi.org/v2';
 
-const String HEADLINES_ROUTE = '/top-headlines';
+const String headlinesRoute = '/top-headlines';
 
-const String EVERYTHING_ROUTE = '/everything';
+const String everythingRoute = '/everything';
 
-const String SOURCES_ROUTE = '/sources';
+const String sourcesRoute = '/sources';

@@ -3,19 +3,20 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:dio/dio.dart';
-import 'package:neaws/api/models/articles_response.dart';
-import 'package:neaws/api/models/sources_response.dart';
-import 'package:neaws/api/urls.dart';
-import 'package:neaws/constants/categories.dart';
-import 'package:neaws/constants/countries.dart';
-import 'package:neaws/constants/languages.dart';
-import 'package:neaws/constants/sortings.dart';
+
+import '../constants/categories.dart';
+import '../constants/countries.dart';
+import '../constants/languages.dart';
+import '../constants/sortings.dart';
+import 'models/articles_response.dart';
+import 'models/sources_response.dart';
+import 'urls.dart';
 
 class NewsApi {
   NewsApi({this.apiKey}) {
     dio = Dio(
       BaseOptions(
-        baseUrl: BASE_URL,
+        baseUrl: baseUrl,
         headers: <String, dynamic>{
           'X-Api-Key': apiKey,
         },
@@ -51,7 +52,7 @@ class NewsApi {
       'page': page?.toString(),
     }..removeWhere((String key, String value) => value == null);
 
-    final Response<dynamic> response = await dio.get<dynamic>(HEADLINES_ROUTE,
+    final Response<dynamic> response = await dio.get<dynamic>(headlinesRoute,
         queryParameters: queryParameters);
 
     return ArticlesResponse.fromJSON(response.data);
@@ -96,7 +97,7 @@ class NewsApi {
     }..removeWhere((String key, String value) => value == null);
 
     final Response<dynamic> response = await dio.get<dynamic>(
-      EVERYTHING_ROUTE,
+      everythingRoute,
       queryParameters: queryParameters,
     );
 
@@ -124,7 +125,7 @@ class NewsApi {
     }..removeWhere((String key, String value) => value == null);
 
     final Response<dynamic> response = await dio.get<dynamic>(
-      EVERYTHING_ROUTE,
+      everythingRoute,
       queryParameters: queryParameters,
     );
     final Map<String, dynamic> json = jsonDecode(response.data);
