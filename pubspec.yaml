@@ -1,9 +1,12 @@
 name: neaws
-description: A new Flutter project.
+description:
+    A news reader for Android and iOS written in Flutter. Uses newsapi.org.
+
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
-    sdk: '>=2.1.0 <3.0.0'
+    sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
     flutter:
@@ -34,14 +37,7 @@ dev_dependencies:
 flutter_icons:
     android: true
     ios: false
-    image_path: 'assets/logo.png'
+    image_path: "assets/logo.png"
 
 flutter:
     uses-material-design: true
-
-    fonts:
-        - family: HK Grotesk
-          fonts:
-              - asset: fonts/Inter-Light-BETA.ttf
-              - asset: fonts/Inter-Bold.ttf
-                weight: 700
