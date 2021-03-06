@@ -9,30 +9,30 @@ environment:
     sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+    cached_network_image: ^2.0.0-rc.1
+
+    dio: ^3.0.10
+
+    eva_icons_flutter: ^2.0.1
+
     flutter:
         sdk: flutter
 
-    dio: ^3.0.7
-
     flutter_custom_tabs: ^0.6.0
 
-    shared_preferences: ^0.5.6
+    provider: ^4.3.3
+
+    share: ^0.6.5
+
+    shared_preferences: ^0.5.12
 
     simple_design: ^1.0.3
 
-    eva_icons_flutter: ^2.0.0
-
-    cached_network_image: ^2.0.0-rc.1
-
-    share: ^0.6.3+5
-
-    provider: ^3.2.0
-
 dev_dependencies:
+    flutter_launcher_icons: ^0.7.5
+
     flutter_test:
         sdk: flutter
-
-    flutter_launcher_icons: ^0.7.4
 
     lint: ^1.5.3
 
@@ -43,3 +43,10 @@ flutter_icons:
 
 flutter:
     uses-material-design: true
+
+    fonts:
+        - family: HK Grotesk
+          fonts:
+              - asset: fonts/Inter-Light-BETA.ttf
+              - asset: fonts/Inter-Bold.ttf
+                weight: 700
