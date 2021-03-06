@@ -1,42 +1,42 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:neaws/api/models/article.dart';
+import 'package:neaws/api/models/articles_response.dart';
+import 'package:neaws/api/models/source.dart';
+import 'package:neaws/constants/languages.dart';
+import 'package:neaws/constants/sortings.dart';
+import 'package:neaws/providers/news_api_provider.dart';
+import 'package:neaws/ui/widgets/list_item.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_design/simple_design.dart';
 
 class SourcePage extends StatefulWidget {
-  final Map source;
-  final String apiKey;
+  const SourcePage({this.source, this.apiKey});
 
-  SourcePage({this.source, this.apiKey});
+  final Source source;
+  final String apiKey;
 
   @override
   _SourcePageState createState() => _SourcePageState();
 }
 
 class _SourcePageState extends State<SourcePage> {
-  List articles = [];
+  List<Article> articles = <Article>[];
 
-  Future<List> fetchAPIData(String url) async {
-    var response = await http.get(url);
-    var data = json.decode(response.body);
+  Future<void> updateSourceList() async {
+    final ArticlesResponse articlesResponse =
+        await Provider.of<NewsApiProvider>(context).newsApi.getEverything(
+              language: Languages.en,
+              sources: <String>[widget.source.id],
+              sortBy: Sortings.popularity,
+            );
 
-    return data["articles"];
-  }
-
-  Future<Null> updateSourceList() async {
-    await fetchAPIData(buildEverythingRequest(
-            language: Languages.en,
-            sourcesIDs: widget.source["id"],
-            sortBy: Sortings.popularity,
-            apiKey: widget.apiKey))
-        .then((list) {
-      setState(() {
-        articles = list;
-      });
+    setState(() {
+      articles = articlesResponse.articles;
     });
-    return null;
+
+    return;
   }
 
   String buildEverythingRequest(
@@ -50,29 +50,37 @@ class _SourcePageState extends State<SourcePage> {
       int pageSize,
       int page,
       @required String apiKey}) {
-    String url = "https://newsapi.org/v2/everything?";
+    String url = 'https://newsapi.org/v2/everything?';
 
-    if (searchTerm != null) url += ("q=" + searchTerm + "&");
-    if (sourcesIDs != null) url += ("sources=" + sourcesIDs + "&");
-    if (domains != null) url += ("domains=" + domains + "&");
-    if (from != null) url += ("from=" + from.toIso8601String() + "&");
-    if (to != null) url += ("to=" + to.toIso8601String() + "&");
-    if (language != null)
-      url += ("language=" +
-          language.toString().replaceAll("Languages.", "") +
-          "&");
-    if (sortBy != null)
-      url += ("sortBy=" + sortBy.toString().replaceAll("Sortings.", "") + "&");
-    if (pageSize != null) url += ("pageSize=" + pageSize.toString() + "&");
-    if (page != null) url += ("page=" + page.toString() + "&");
+    if (searchTerm != null) {
+      url += 'q=$searchTerm&';
+    }
+    if (sourcesIDs != null) {
+      url += 'sources=$sourcesIDs&';
+    }
+    if (domains != null) {
+      url += 'domains=$domains&';
+    }
+    if (from != null) {
+      url += 'from=${from.toIso8601String()}&';
+    }
+    if (to != null) {
+      url += 'to=${to.toIso8601String()}&';
+    }
+    if (language != null) {
+      url += 'language=${language.toString().replaceAll("Languages.", "")}&';
+    }
+    if (sortBy != null) {
+      url += 'sortBy=${sortBy.toString().replaceAll("Sortings.", "")}&';
+    }
+    if (pageSize != null) {
+      url += 'pageSize=${pageSize.toString()}&';
+    }
+    if (page != null) {
+      url += 'page=${page.toString()}&';
+    }
 
-    return url += ("apiKey=" + apiKey);
-  }
-
-  @override
-  void initState() {
-    updateSourceList();
-    super.initState();
+    return url += 'apiKey=$apiKey';
   }
 
   @override
@@ -88,26 +96,26 @@ class _SourcePageState extends State<SourcePage> {
           SDSliverAppBar(
             title: RichText(
                 text: TextSpan(
-                    text: "Articles from: ",
+                    text: 'Articles from: ',
                     style: Theme.of(context)
                         .textTheme
                         .title
                         .copyWith(fontWeight: FontWeight.normal),
-                    children: [
+                    children: <TextSpan>[
                   TextSpan(
-                      text: widget.source["name"],
+                      text: widget.source.name,
                       style: Theme.of(context).textTheme.title)
                 ])),
           ),
-          articles.length < 1
-              ? SliverFillRemaining(
+          articles.isEmpty
+              ? const SliverFillRemaining(
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 )
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
-                      (context, i) => ListItem(articles[i]),
+                      (BuildContext context, int i) => ListItem(articles[i]),
                       childCount: articles.length),
                 )
         ],

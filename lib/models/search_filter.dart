@@ -2,13 +2,6 @@ import 'package:neaws/constants/languages.dart';
 import 'package:neaws/constants/sortings.dart';
 
 class SearchFilter {
-  final String searchTerm;
-  final DateTime from;
-  final DateTime to;
-  final Sortings sortings;
-  final int pageLength;
-  final Languages language;
-
   SearchFilter({
     this.searchTerm,
     this.from,
@@ -18,13 +11,20 @@ class SearchFilter {
     this.language,
   });
 
+  final String searchTerm;
+  final DateTime from;
+  final DateTime to;
+  final Sortings sortings;
+  final int pageLength;
+  final Languages language;
+
   SearchFilter copyWith({
-    searchTerm,
-    from,
-    to,
-    sortings,
-    pageLength,
-    language,
+    String searchTerm,
+    DateTime from,
+    DateTime to,
+    Sortings sortings,
+    int pageLength,
+    Languages language,
   }) =>
       SearchFilter(
         searchTerm: searchTerm ?? this.searchTerm,

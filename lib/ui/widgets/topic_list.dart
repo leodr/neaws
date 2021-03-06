@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:neaws/api/models/article.dart';
 import 'package:neaws/constants/categories.dart';
+import 'package:neaws/providers/news_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'list_item.dart';
 
-class TopicList extends StatelessWidget {
-  final Future Function({Categories category}) onUpdate;
-  final Categories category;
-  final List articleList;
-  final VoidCallback onSaved;
-
+class TopicList extends StatefulWidget {
   const TopicList({
     Key key,
     this.onUpdate,
@@ -17,23 +15,41 @@ class TopicList extends StatelessWidget {
     this.onSaved,
   }) : super(key: key);
 
+  final Future<void> Function({Categories category}) onUpdate;
+  final Categories category;
+  final List<Article> articleList;
+  final VoidCallback onSaved;
+
+  @override
+  _TopicListState createState() => _TopicListState();
+}
+
+class _TopicListState extends State<TopicList> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<NewsProvider>(context).updateList(category: widget.category);
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       displacement: kToolbarHeight,
-      onRefresh: () => onUpdate(
-        category: category,
+      onRefresh: () => widget.onUpdate(
+        category: widget.category,
       ),
-      child: articleList.length < 1
-          ? Center(
+      child: widget.articleList.isEmpty
+          ? const SliverFillRemaining(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemBuilder: (context, i) => ListItem(
-                articleList[i],
-                onSaved: onSaved,
+          : SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int i) => ListItem(
+                  widget.articleList[i],
+                  onSaved: widget.onSaved,
+                ),
+                childCount: widget.articleList.length,
               ),
-              itemCount: articleList.length,
             ),
     );
   }

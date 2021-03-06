@@ -1,5 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:neaws/api/models/article.dart';
+import 'package:neaws/ui/widgets/custom_back_button.dart';
 import 'package:neaws/ui/widgets/list_item.dart';
 import 'package:provider/provider.dart';
 
@@ -17,21 +19,22 @@ class SearchPage extends StatelessWidget {
             NewsSearchProvider newsSearchProvider,
             _,
           ) {
-            final theme = Theme.of(context);
+            final ThemeData theme = Theme.of(context);
 
-            final searchList = newsSearchProvider.searchList;
-            final searchFilter = newsSearchProvider.searchFilter;
+            final List<Article> searchList = newsSearchProvider.searchList;
 
             return CustomScrollView(
               slivers: <Widget>[
                 SliverAppBar(
+                  leading: const CustomBackButton(),
                   floating: true,
                   title: TextField(
-                    onSubmitted: (q) => newsSearchProvider.updateSearchList(q),
+                    onSubmitted: (String q) =>
+                        newsSearchProvider.updateSearchList(q),
                     decoration: InputDecoration(
-                      hintText: "Search",
+                      hintText: 'Search',
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 12.0,
                       ),
                     ),
@@ -45,24 +48,25 @@ class SearchPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushNamed(
                           context,
-                          "/searchfilter",
+                          '/searchfilter',
                         );
                       },
                     ),
                   ],
                 ),
-                searchList.length < 1
+                searchList.isEmpty
                     ? SliverFillRemaining(
                         child: Center(
                           child: Text(
-                            "Tap the textfield to search.",
+                            'Tap the textfield to search.',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ),
                       )
                     : SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          (context, i) => ListItem(searchList[i]),
+                          (BuildContext context, int i) =>
+                              ListItem(searchList[i]),
                           childCount: searchList.length,
                         ),
                       ),

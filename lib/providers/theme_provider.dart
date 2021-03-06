@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:simple_design/simple_design.dart';
 
 class ThemeProvider with ChangeNotifier {
-  final ThemeData lightTheme = SimpleDesign.lightTheme;
+  static ThemeData lightTheme = SimpleDesign.lightTheme;
 
-  final ThemeData darkTheme = SimpleDesign.darkTheme;
+  static ThemeData darkTheme = SimpleDesign.darkTheme;
 
-  ThemeData _theme;
+  ThemeData _theme = lightTheme;
 
   ThemeData get theme => _theme;
 
@@ -15,7 +15,7 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setTheme(Themes newTheme) {
+  void setTheme(Themes newTheme) {
     switch (newTheme) {
       case Themes.light:
         theme = lightTheme;

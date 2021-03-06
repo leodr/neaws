@@ -1,17 +1,17 @@
 import 'source.dart';
 
 class SourcesResponse {
-  final String status;
-  final List<Source> sources;
-
   SourcesResponse({
     this.status,
     this.sources,
   });
 
-  SourcesResponse.fromJSON(Map json)
-      : status = json["status"],
-        sources = json["sources"].map(
-          (e) => Source.fromJSON(e),
+  SourcesResponse.fromJSON(Map<String, dynamic> json)
+      : status = json['status'],
+        sources = json['sources'].map(
+          (dynamic e) => Source.fromJSON(e),
         );
+
+  final String status;
+  final List<Source> sources;
 }

@@ -1,40 +1,32 @@
 name: neaws
-description: A new Flutter project.
+description:
+    A news reader for Android and iOS written in Flutter. Uses newsapi.org.
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
-    sdk: '>=2.1.0 <3.0.0'
+    sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
     flutter:
         sdk: flutter
 
-    dio: ^3.0.4
+    dio: ^3.0.7
 
     flutter_custom_tabs: ^0.6.0
 
-    shared_preferences: ^0.5.4+3
+    shared_preferences: ^0.5.6
 
     simple_design: ^1.0.3
 
     eva_icons_flutter: ^2.0.0
 
-    cached_network_image: ^1.1.2+1
+    cached_network_image: ^2.0.0-rc.1
 
-    share: ^0.6.3+1
+    share: ^0.6.3+5
 
-    provider: ^3.1.0+1
+    provider: ^3.2.0
 
 dev_dependencies:
     flutter_test:
@@ -45,14 +37,7 @@ dev_dependencies:
 flutter_icons:
     android: true
     ios: false
-    image_path: 'assets/logo.png'
+    image_path: "assets/logo.png"
 
 flutter:
     uses-material-design: true
-
-    fonts:
-        - family: HK Grotesk
-          fonts:
-              - asset: fonts/Inter-Light-BETA.ttf
-              - asset: fonts/Inter-Bold.ttf
-                weight: 700

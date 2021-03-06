@@ -1,14 +1,17 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
-class SettingsButton extends StatelessWidget {
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(EvaIcons.settings2Outline),
+      icon: Icon(EvaIcons.arrowBackOutline),
       onPressed: () {
-        Navigator.of(context).pushNamed('/settings');
+        Navigator.pop(context);
       },
+      tooltip: 'Back',
     );
   }
 }
