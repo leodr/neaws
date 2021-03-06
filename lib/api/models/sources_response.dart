@@ -6,11 +6,11 @@ class SourcesResponse {
     this.sources,
   });
 
-  SourcesResponse.fromJSON(Map<String, dynamic> json)
-      : status = json['status'],
-        sources = json['sources'].map(
-          (dynamic e) => Source.fromJSON(e),
-        );
+  SourcesResponse.fromJSON(dynamic json)
+      : status = json['status'] as String,
+        sources = (json['sources'] as List)
+            .map<Source>((e) => Source.fromJSON(e))
+            .toList();
 
   final String status;
   final List<Source> sources;

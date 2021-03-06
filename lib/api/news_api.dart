@@ -128,7 +128,7 @@ class NewsApi {
       everythingRoute,
       queryParameters: queryParameters,
     );
-    final Map<String, dynamic> json = jsonDecode(response.data);
+    final dynamic json = jsonDecode(response.data.toString());
 
     return SourcesResponse.fromJSON(json);
   }

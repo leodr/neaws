@@ -9,14 +9,14 @@ class Source {
     this.country,
   });
 
-  Source.fromJSON(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
-        description = json['description'],
-        url = json['url'],
-        category = json['category'],
-        language = json['language'],
-        country = json['country'];
+  Source.fromJSON(dynamic json)
+      : id = json['id'] as String,
+        name = json['name'] as String,
+        description = json['description'] as String,
+        url = json['url'] as String,
+        category = json['category'] as String,
+        language = json['language'] as String,
+        country = json['country'] as String;
 
   final String id;
   final String name;

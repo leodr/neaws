@@ -4,9 +4,9 @@ class SourceInArticle {
     this.name,
   });
 
-  SourceInArticle.fromJSON(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'];
+  SourceInArticle.fromJSON(dynamic json)
+      : id = json['id'] as String,
+        name = json['name'] as String;
 
   final String id;
   final String name;

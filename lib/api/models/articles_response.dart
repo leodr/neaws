@@ -7,13 +7,11 @@ class ArticlesResponse {
     this.articles,
   });
 
-  ArticlesResponse.fromJSON(Map<String, dynamic> json)
-      : status = json['status'],
-        totalResults = json['totalResults'],
-        articles = json['articles']
-            .map<Article>(
-              (dynamic e) => Article.fromJSON(e),
-            )
+  ArticlesResponse.fromJSON(dynamic json)
+      : status = json['status'] as String,
+        totalResults = json['totalResults'] as int,
+        articles = (json['articles'] as List)
+            .map<Article>((e) => Article.fromJSON(e))
             .toList();
 
   final String status;
