@@ -7,7 +7,7 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(EvaIcons.arrowBackOutline),
+      icon: const Icon(EvaIcons.arrowBackOutline),
       onPressed: () {
         Navigator.pop(context);
       },

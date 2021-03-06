@@ -31,8 +31,8 @@ class HeadlinesPage extends StatelessWidget {
                 title: Text.rich(
                   TextSpan(
                     text: 'Neaws ',
-                    style: theme.textTheme.title,
-                    children: <TextSpan>[
+                    style: theme.textTheme.headline6,
+                    children: const <TextSpan>[
                       TextSpan(
                         text: 'Headlines',
                         style: TextStyle(
@@ -46,21 +46,22 @@ class HeadlinesPage extends StatelessWidget {
                   SettingsButton(),
                 ],
               ),
-              listItems.isEmpty
-                  ? const SliverFillRemaining(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int i) => ListItem(
-                          listItems[i],
-                          onSaved: newsProvider.updateSavedList,
-                        ),
-                        childCount: listItems.length,
-                      ),
+              if (listItems.isEmpty)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int i) => ListItem(
+                      listItems[i],
+                      onSaved: newsProvider.updateSavedList,
                     ),
+                    childCount: listItems.length,
+                  ),
+                ),
             ],
           ),
         );

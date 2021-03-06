@@ -39,7 +39,7 @@ class _FilterDialogState extends State<FilterDialog> {
                   title: const Text('Filters'),
                   actions: <Widget>[
                     IconButton(
-                      icon: Icon(EvaIcons.checkmarkOutline),
+                      icon: const Icon(EvaIcons.checkmarkOutline),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -50,7 +50,7 @@ class _FilterDialogState extends State<FilterDialog> {
                   delegate: SliverChildListDelegate(
                     <Widget>[
                       ListTile(
-                        leading: Icon(EvaIcons.textOutline),
+                        leading: const Icon(EvaIcons.textOutline),
                         title: TextField(
                           controller: _searchTermController,
                           onChanged: (String v) {
@@ -64,7 +64,7 @@ class _FilterDialogState extends State<FilterDialog> {
                       SDDivider(),
                       SDSectionHeader('Date'),
                       ListTile(
-                        leading: Icon(EvaIcons.calendarOutline),
+                        leading: const Icon(EvaIcons.calendarOutline),
                         title: const Text('From:'),
                         trailing: Text(
                           formatDate(searchFilter.from) ?? '',
@@ -78,8 +78,9 @@ class _FilterDialogState extends State<FilterDialog> {
                             lastDate: DateTime.now(),
                           );
 
-                          if (date != null)
+                          if (date != null) {
                             newsSearchProvider.updateSearchFilter(from: date);
+                          }
                         },
                       ),
                       ListTile(
@@ -97,30 +98,31 @@ class _FilterDialogState extends State<FilterDialog> {
                             lastDate: DateTime.now(),
                           );
 
-                          if (date != null)
+                          if (date != null) {
                             newsSearchProvider.updateSearchFilter(to: date);
+                          }
                         },
                       ),
                       SDDivider(),
                       SDSectionHeader('Sort by'),
                       ListTile(
-                        leading: Icon(EvaIcons.trendingUpOutline),
+                        leading: const Icon(EvaIcons.trendingUpOutline),
                         title: DropdownButton<Sortings>(
                           hint: const Text('Sort by'),
                           value: searchFilter.sortings,
                           isExpanded: true,
                           items: const <DropdownMenuItem<Sortings>>[
                             DropdownMenuItem<Sortings>(
-                              child: Text('Relevancy'),
                               value: Sortings.relevancy,
+                              child: Text('Relevancy'),
                             ),
                             DropdownMenuItem<Sortings>(
-                              child: Text('Popularity'),
                               value: Sortings.popularity,
+                              child: Text('Popularity'),
                             ),
                             DropdownMenuItem<Sortings>(
-                              child: Text('Published At'),
                               value: Sortings.publishedAt,
+                              child: Text('Published At'),
                             ),
                           ],
                           onChanged: (Sortings value) {
@@ -132,20 +134,20 @@ class _FilterDialogState extends State<FilterDialog> {
                       SDDivider(),
                       SDSectionHeader('Language'),
                       ListTile(
-                        leading: Icon(EvaIcons.globe2Outline),
+                        leading: const Icon(EvaIcons.globe2Outline),
                         title: DropdownButton<Languages>(
                           isExpanded: true,
                           value: searchFilter.language,
                           items: List<DropdownMenuItem<Languages>>.generate(
                             Languages.values.length,
                             (int i) => DropdownMenuItem<Languages>(
+                              value: Languages.values[i],
                               child: Text(
                                 Languages.values[i]
                                     .toString()
                                     .split('.')[1]
                                     .toUpperCase(),
                               ),
-                              value: Languages.values[i],
                             ),
                           ),
                           onChanged: (Languages val) {
@@ -158,7 +160,7 @@ class _FilterDialogState extends State<FilterDialog> {
                       SDDivider(),
                       SDSectionHeader('Articles per page'),
                       ListTile(
-                        leading: Icon(EvaIcons.bookOpenOutline),
+                        leading: const Icon(EvaIcons.bookOpenOutline),
                         title: Slider(
                           value: (searchFilter.pageLength - 10) / 90,
                           divisions: 9,
@@ -172,7 +174,7 @@ class _FilterDialogState extends State<FilterDialog> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             );
           },

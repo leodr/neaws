@@ -33,7 +33,7 @@ class SettingsPage extends StatelessWidget {
                         );
                       },
                       title: const Text('Dark Theme'),
-                      secondary: Icon(EvaIcons.sunOutline),
+                      secondary: const Icon(EvaIcons.sunOutline),
                     ),
                   ],
                 ),

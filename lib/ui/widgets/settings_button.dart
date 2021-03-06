@@ -5,7 +5,7 @@ class SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(EvaIcons.settings2Outline),
+      icon: const Icon(EvaIcons.settings2Outline),
       onPressed: () {
         Navigator.of(context).pushNamed('/settings');
       },

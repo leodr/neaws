@@ -12,7 +12,7 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         body: Consumer<NewsSearchProvider>(
           builder: (
             BuildContext context,
@@ -31,10 +31,10 @@ class SearchPage extends StatelessWidget {
                   title: TextField(
                     onSubmitted: (String q) =>
                         newsSearchProvider.updateSearchList(q),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Search',
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                         vertical: 12.0,
                       ),
                     ),
@@ -44,7 +44,7 @@ class SearchPage extends StatelessWidget {
                   forceElevated: true,
                   actions: <Widget>[
                     IconButton(
-                      icon: Icon(EvaIcons.funnelOutline),
+                      icon: const Icon(EvaIcons.funnelOutline),
                       onPressed: () {
                         Navigator.pushNamed(
                           context,
@@ -54,22 +54,22 @@ class SearchPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                searchList.isEmpty
-                    ? SliverFillRemaining(
-                        child: Center(
-                          child: Text(
-                            'Tap the textfield to search.',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                        ),
-                      )
-                    : SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int i) =>
-                              ListItem(searchList[i]),
-                          childCount: searchList.length,
-                        ),
+                if (searchList.isEmpty)
+                  SliverFillRemaining(
+                    child: Center(
+                      child: Text(
+                        'Tap the textfield to search.',
+                        style: Theme.of(context).textTheme.caption,
                       ),
+                    ),
+                  )
+                else
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int i) => ListItem(searchList[i]),
+                      childCount: searchList.length,
+                    ),
+                  ),
               ],
             );
           },
